@@ -1,4 +1,4 @@
-#include <GL/glew.h>
+ï»¿#include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <fstream>
@@ -95,7 +95,7 @@ int main(void)
         return -1;
 
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(1280, 960, "Hello World", NULL, NULL);
+    window = glfwCreateWindow(1280*0.5, 960*0.5, "Blackjack", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -113,87 +113,23 @@ int main(void)
     }
 
     float positions[] = {
-         -1.0f, -1.0f,
-          1.0f, -1.0f,
-          1.0f,  1.0f,
+        //background rim
+         -1.0, -1.0,
+          1.0, -1.0,
+          1.0,  1.0,
 
-          1.0f,  1.0f,
-         -1.0f,  1.0f,
-         -1.0f, -1.0f,
+          1.0,  1.0,
+         -1.0,  1.0,
+         -1.0, -1.0,
 
-         -0.5f, -0.5f,
-          0.5f, -0.5f,
-          0.0f,  0.5f,
+        //green background
+         -0.9, -0.9,
+          0.9, -0.9,
+          0.9,  0.9,
 
-         -1.0f, -0.1f,
-         -1.0f, -0.2f,
-         -0.25f, 0.0f,
-
-         -0.25f, 0.0f,
-          0.2f,  0.1f,
-          0.21f, 0.08f,
-
-          -0.25f, 0.0f,
-          0.21f,  0.08f,
-          0.22f, 0.06f,
-
-          -0.25f, 0.0f,
-          0.22f,  0.06f,
-          0.23f, 0.04f,
-
-          -0.25f, 0.0f,
-          0.23f,  0.04f,
-          0.24f, 0.02f,
-
-          -0.25f, 0.0f,
-          0.24f,  0.02f,
-          0.25f, 0.0f,
-
-          -0.25f, 0.0f,
-          0.25f,  0.0f,
-          0.26f, -0.02f,
-
-          0.2f, 0.1f,
-          1.0f,  0.0f,
-          1.0f, -0.1f,
-          1.0f, -0.1f,
-          0.21f, 0.08f,
-          0.2f, 0.1f,
-
-          0.21f, 0.08f,
-          1.0f, -0.1f,
-          1.0f, -0.2f,
-          0.21f, 0.08f,
-          1.0f, -0.2f,
-          0.22f, 0.06f,
-
-          0.22f, 0.06f,
-          1.0f, -0.2f,
-          1.0f, -0.3f,
-          0.23f, 0.04f,
-          1.0f, -0.3f,
-          0.22f, 0.06f,
-
-          0.23f, 0.04f,
-          1.0f, -0.3f,
-          1.0f, -0.4f,
-          0.24f, 0.02f,
-          1.0f, -0.4f,
-          0.23f, 0.04f,
-
-          0.24f, 0.02f,
-          1.0f, -0.4f,
-          1.0f, -0.5f,
-          0.25f, 0.0f,
-          1.0f, -0.5f,
-          0.24f, 0.02f,
-
-          0.25f, 0.0f,
-          1.0f, -0.5f,
-          1.0f, -0.6f,
-          0.26f,-0.02f,
-          1.0f, -0.6f,
-          0.25f, 0.0f,
+          0.9,  0.9,
+         -0.9,  0.9,
+         -0.9, -0.9,
     };
 
     unsigned int buffer;
@@ -213,93 +149,24 @@ int main(void)
 
     int location = glGetUniformLocation(shader, "u_Color");
 
-    float a = 0.0f;
-    float b = 1.0f;
-    float c = 1.0f;
-    float d = 0.0f;
-    float e = 0.0f;
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
+        
+        //background rim
+        glUniform4f(location, 0.76, 0.65, 0.51, 1.0);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glUniform4f(location, 0.76, 0.65, 0.51, 1.0);
+        glDrawArrays(GL_TRIANGLES, 3, 3);
 
-        //t³o
-        glUniform4f(location, 0.0f, 0.0f, 0.0f, 1.0f);
-        glDrawArrays(GL_TRIANGLES, 0, 6);
-
-        //pryzmat
-        glUniform4f(location, 1.0f, 1.0f, 1.0f, 0.5f);
+        //green background
+        glUniform4f(location, 0.0, 0.65, 0.0, 1.0);
         glDrawArrays(GL_TRIANGLES, 6, 3);
-
-        //œwiat³o bia³e
-        glUniform4f(location, a, a, a, 1.0f);
+        glUniform4f(location, 0.0, 0.65, 0.0, 1.0);
         glDrawArrays(GL_TRIANGLES, 9, 3);
-
-        //kolor czerwony
-        glUniform4f(location, 1.0f, b, b, 1.0f);
-        glDrawArrays(GL_TRIANGLES, 12, 3);
-
-        //kolor pomarañczowy
-        if (a > 2) glUniform4f(location, 1.0f, c, b, 1.0f);
-        else glUniform4f(location, 1.0f, 1.0f, 1.0f, 1.0f);
-        glDrawArrays(GL_TRIANGLES, 15, 3);
-
-        //kolor ¿ó³ty
-        glUniform4f(location, 1.0f, 1.0f, b, 1.0f);
-        glDrawArrays(GL_TRIANGLES, 18, 3);
-
-        //kolor zielony
-        glUniform4f(location, b, 1.0f, b, 1.0f);
-        glDrawArrays(GL_TRIANGLES, 21, 3);
-
-        //kolor niebieski
-        glUniform4f(location, b, b, 1.0f, 1.0f);
-        glDrawArrays(GL_TRIANGLES, 24, 3);
-
-        //kolor fioletowy
-        glUniform4f(location, 1.0f, b, 1.0f, 1.0f);
-        glDrawArrays(GL_TRIANGLES, 27, 3);
-
-        //przed³u¿enie czerwonego
-        glUniform4f(location, d, 0.0f, 0.0f, 1.0f);
-        glDrawArrays(GL_TRIANGLES, 30, 6);
-
-        //przed³u¿enie pomarañczowego
-        if (b < 0) glUniform4f(location, d, e, 0.0f, 1.0f);
-        else glUniform4f(location, 0.0f, 0.0f, 0.0f, 1.0f);
-        glDrawArrays(GL_TRIANGLES, 36, 6);
-
-        //przed³u¿enie ¿ó³tego
-        glUniform4f(location, d, d, 0.0f, 1.0f);
-        glDrawArrays(GL_TRIANGLES, 42, 6);
-
-        //przed³u¿enie zielonego
-        glUniform4f(location, 0.0f, d, 0.0f, 1.0f);
-        glDrawArrays(GL_TRIANGLES, 48, 6);
-
-        //przed³u¿enie niebieskiego
-        glUniform4f(location, 0.0f, 0.0f, d, 1.0f);
-        glDrawArrays(GL_TRIANGLES, 54, 6);
-
-        //przed³u¿enie fioletowego
-        glUniform4f(location, d, 0.0f, d, 1.0f);
-        glDrawArrays(GL_TRIANGLES, 60, 6);
-
-        if(a <= 2.0f) a += 0.01f;
-        if (a >= 2.0f && b >= 0.0f) b -= 0.01f;
-        if (a >= 2.0f && c > 0.5f) c -= 0.005f;
-        if (b <= 0.0f && d <= 2.0f) d += 0.01f;
-        if (b <= 0.0f && e < 0.5f) e += 0.005f;
-        if (d >= 2.0f)
-        {
-            a = 0.0f;
-            b = 1.0f;
-            c = 1.0f;
-            d = 0.0f;
-            e = 0.0f;
-        }
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
