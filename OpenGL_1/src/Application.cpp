@@ -130,11 +130,30 @@ int main(void)
           0.9,  0.9,
          -0.9,  0.9,
          -0.9, -0.9,
+
+        //and so on
+         -0.3, -0.8,
+          0.3, -0.8,
+          0.3, -0.6,
+
+         -0.3, -0.8,
+         -0.3, -0.6,
+          0.3, -0.6,
+
+         -0.3, -0.5,
+        -0.05, -0.5,
+        -0.05,  0.0,
+
+         -0.3, -0.5,
+         -0.3,  0.0,
+        -0.05,  0.0,
+
     };
 
     unsigned int buffer;
     glGenBuffers(1, &buffer);
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
+    //if buffer space allocated is too small, will omit the rest
     glBufferData(GL_ARRAY_BUFFER, 6 * 22 * sizeof(float), positions, GL_STATIC_DRAW);
 
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
@@ -149,7 +168,6 @@ int main(void)
 
     int location = glGetUniformLocation(shader, "u_Color");
 
-
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
@@ -157,9 +175,9 @@ int main(void)
         glClear(GL_COLOR_BUFFER_BIT);
         
         //background rim
-        glUniform4f(location, 0.76, 0.65, 0.51, 1.0);
+        glUniform4f(location, 0.7, 0.6, 0.5, 1.0);
         glDrawArrays(GL_TRIANGLES, 0, 3);
-        glUniform4f(location, 0.76, 0.65, 0.51, 1.0);
+        glUniform4f(location, 0.7, 0.6, 0.5, 1.0);
         glDrawArrays(GL_TRIANGLES, 3, 3);
 
         //green background
@@ -167,6 +185,26 @@ int main(void)
         glDrawArrays(GL_TRIANGLES, 6, 3);
         glUniform4f(location, 0.0, 0.65, 0.0, 1.0);
         glDrawArrays(GL_TRIANGLES, 9, 3);
+
+        glUniform4f(location, 1.0, 0.5, 0.0, 1.0);
+        glDrawArrays(GL_TRIANGLES, 12, 3);
+        glUniform4f(location, 1.0, 0.5, 0.0, 1.0);
+        glDrawArrays(GL_TRIANGLES, 15, 3);
+
+        if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT)) {
+
+            double xpos, ypos;
+            glfwGetCursorPos(window, &xpos, &ypos);
+            std::cout << "Cursor Position at " << xpos << " : " << ypos << std::endl;
+
+            if (xpos > 220 && xpos < 420 && ypos > 380 && ypos < 430)
+            {
+                glUniform4f(location, 0.9, 0.9, 0.9, 1.0);
+                glDrawArrays(GL_TRIANGLES, 18, 3);
+                glUniform4f(location, 0.9, 0.9, 0.9, 1.0);
+                glDrawArrays(GL_TRIANGLES, 21, 3);
+            }
+        }
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
